@@ -1,5 +1,6 @@
 package org.elsys_bg.miniuber_driver_service.service;
 
+import lombok.RequiredArgsConstructor;
 import org.elsys_bg.miniuber_driver_service.entity.Driver;
 import org.elsys_bg.miniuber_driver_service.repository.DriverRepository;
 import org.springframework.stereotype.Service;
@@ -7,18 +8,23 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class DriverService{
     private final DriverRepository driverRepository;
 
-    public DriverService(DriverRepository driverRepository){
-        this.driverRepository = driverRepository;
+    public Driver createDriver(Driver driver){
+        return driverRepository.save(driver);
     }
 
-    public Driver getDriverById(String id){
+    public void removeDriverById(Integer id){
+        driverRepository.deleteById(id);
+    }
+
+    public Driver getDriverById(Integer id){
         return driverRepository.findById(id).orElse(null);
     }
 
-    public void updateDriverLocation(String id, String location) {
+    public void updateDriverLocation(Integer id, String location) {
         Driver driver = driverRepository.findById(id).orElse(null);
         if (driver != null) {
             driver.setLocation(location);
@@ -26,7 +32,7 @@ public class DriverService{
         }
     }
 
-    public void updateDriverAvailability(String id, boolean availability) {
+    public void updateDriverAvailability(Integer id, boolean availability) {
         Driver driver = driverRepository.findById(id).orElse(null);
         if (driver != null) {
             driver.setAvailability(availability);
